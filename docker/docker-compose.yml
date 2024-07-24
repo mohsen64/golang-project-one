@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  postgres:
+  image: postgres
+  container_name: postgres_conrtainer
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: admin
+    POSTGRES_db: car_sale_db
+    PGDATA: /data/postgres
+  volumes:
+    - postgres:/data/postgres
+  port:
+   - "5432:5432"
+  network:
+    - webapi_network
+  restart: unless-stopped
+
+pgadmin:
+  image: dpage/pgadmin4
+  container_name: pgadmin_container
+  environment:
+    PGADMIN_DEFAULT_EMAIL: mtn46004@gmail.com
+    PGADMIN_DEFAULT_PASSWORD: admin
+  volumes:
+    - pgadmin:/var/lib/pgadmin
+  ports:
+    - "8090:80"
+  network:
+    - webapi_network
+  restart: unless-stopped
+  depends_on:
+    - postgres
+
+  web:
+    build:.
+
+  
